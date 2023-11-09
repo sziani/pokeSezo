@@ -5,7 +5,14 @@ import { vitePreprocess } from '@sveltejs/kit/vite';
 const config = {
 	// Consult https://kit.svelte.dev/docs/integrations#preprocessors
 	// for more information about preprocessors
-	preprocess: vitePreprocess(),
+	preprocess: vitePreprocess({
+		typescript: {
+			tsconfigFile: './tsconfig.json'
+		},
+		scss: {
+			prependData: `@import 'src/styles/variables.scss';`
+		}
+	}),
 
 	kit: {
 		// adapter-auto only supports some environments, see https://kit.svelte.dev/docs/adapter-auto for a list.
