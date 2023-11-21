@@ -1,76 +1,29 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
-	import { myPokemonStore } from '../stores/root.js';
 	import Button from '../components/Button/Button.svelte';
-	import Canvas from '../components/Canvas/Canvas.svelte';
 
-	let canvas: HTMLCanvasElement;
-	let pokemonClicked: string = '';
-	let srcMychoice: string = '';
-
-	async function chooseMyPokemon(pokemonName: string) {
-		pokemonClicked = pokemonName;
-		if (pokemonClicked) {
-			const myChoice = await fetch(`${$myPokemonStore}${pokemonClicked}`);
-			const myChoiceData = await myChoice.json();
-			srcMychoice = myChoiceData.sprites.front_default;
-			drawMyPokemon();
-		}
-	}
-
-	function drawMyPokemon() {
-		const context = canvas.getContext('2d');
-		if (context) {
-			context.clearRect(0, 0, canvas.width, canvas.height);
-			const img = new Image();
-			img.src = srcMychoice;
-			img.onload = () => {
-				context?.drawImage(img, 0, 0, 96, 96);
-			};
-		}
-	}
-
-	onMount(async () => {
-		const resSource = await fetch(`http://127.0.0.1:3000/`);
-		const resExternal = await resSource.json();
-		const root = await fetch(resExternal.root).then((res) => res.json());
-		myPokemonStore.set(root.pokemon);
-	});
+	let start: string = 'Start';
 </script>
 
 <h1 class="title-container">Pokemon</h1>
 
 <div class="welcome-container">
-	<div class="buttons-container">
-		{#each ['Pikachu', 'Ditto'] as pokemon}
-			<Button
-				label={pokemon}
-				on:click={() => {
-					chooseMyPokemon(pokemon.toLowerCase());
-					drawMyPokemon();
-				}}
-			/>
-		{/each}
-	</div>
-
-	<Canvas bind:canvas />
+	<a href="/game">
+		<Button size="large" label={start} />
+	</a>
 </div>
 
 <style lang="scss">
 	@import './home.scss';
-	:global(body, html) {
-		height: 100%;
-		width: 100%;
-		margin: 0;
-		background-color: #0a0a0a;
-		overflow-x: hidden;
-	}
 
 	h1 {
 		animation-duration: 5s;
 		animation-name: slidein;
+		font-family: 'Helvetica Neue', Helvetica, sans-serif;
+		color: $primary-color;
+		font-size: $h1-font-size;
+		text-shadow: -1px -1px 2px $secondary-color, -1px -1px 2px $secondary-color,
+			-1px -1px 2px $secondary-color, -1px -1px 2px $secondary-color;
 	}
-
 	.welcome-container {
 		display: flex;
 		flex-direction: column;
@@ -82,13 +35,12 @@
 		margin: 0;
 	}
 
-	.buttons-container {
+	.title-container {
 		display: flex;
-		flex-direction: row;
 		align-items: center;
-		justify-content: space-between;
-		padding: 1rem;
-		width: 34rem;
+		justify-content: center;
+		margin-top: 0;
+		margin-bottom: 0;
 	}
 
 	@keyframes slidein {
