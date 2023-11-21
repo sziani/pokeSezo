@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Button from '../components/Button/Button.svelte';
 
-	let start: string = 'Start';
+	let start: string = 'Start Now';
 </script>
 
 <h1 class="title-container">Pokemon</h1>
