@@ -1,3 +1,3 @@
-import { writable } from 'svelte/store';
+import { persistentStore } from "./services/persistentStore";
 
-export const myPokemonStore = writable(null);
+export const myPokemonStore = persistentStore("myPokemonStore", null);
